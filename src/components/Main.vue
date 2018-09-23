@@ -22,10 +22,12 @@
    <textarea id="link" class="link"></textarea>
     <div class="restartAsk" v-show="restart">
       <section>
-        <span>{{ this.anchor ? '欢迎' : '回来啦？'}}</span>
-        <span>{{ this.anchor ? '是否载入分享场景' : '从上次的场景继续？'}}</span>
-        <button type="button" @click="start(1)">是的，{{ this.anchor ? '载入' : '继续' }}</button>
-        <button type="button" @click="start(0)">重新开始</button>
+        <span>欢迎，检测到记录</span>
+        <span v-show="scenes">载入分享场景 ?</span>
+        <span v-show="anchor">从上次的场景继续 ?</span>
+        <button v-show="scenes" type="button" @click="start(1, scenes)">载入分享场景</button>
+        <button v-show="anchor" type="button" @click="start(2, anchor)">进入上回进度</button>
+        <button type="button" @click="start(0, null)">重新开始</button>
       </section>
     </div>
   </section>
@@ -46,7 +48,8 @@ export default class Main extends Vue {
   private inputing: boolean = false
   private restart: boolean = false
   private key: string | null = ''
-  private anchor = ''
+  private scenes: any = ''
+  private anchor: any = ''
   private toastStatus = false
 
   private mounted() {
@@ -58,9 +61,10 @@ export default class Main extends Vue {
       const arr: any = item.split('=')
       data[arr[0]] = arr[1]
     })
+    this.anchor = window.localStorage.getItem('#kungfu')
     if (data.anchor) {
       // 如果链接中包含分享key则从分享场景开始
-      this.key = this.anchor = data.anchor
+      this.scenes = data.anchor
       this.restart = true
     } else {
       this.key = window.localStorage.getItem('#kungfu')
@@ -78,10 +82,11 @@ export default class Main extends Vue {
     !this.inputing && (this.talkShow = true)
   }
 
-  private start(n: number): void {
+  private start(n: number, key: any): void {
     this.restart = false
     if (n) {
       // 继续
+      this.key = key
       this.awswerList(this.key)
     } else {
       // 重新开始
