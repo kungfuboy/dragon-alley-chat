@@ -7,7 +7,7 @@
       </ul>
     </div>
     <ul class="chat-list" ref="chat">
-      <li v-for="(item, index) in talkArr" :class="item.user ? item.user + ' left' : 'right'" :key="index">
+      <li v-for="(item, index) in talkArr" :class="item.uid ? item.uid + ' left' : 'right'" :key="index">
         <span>{{item.value}}</span>
       </li>
       <li class="left wish" v-show="inputing">
@@ -84,9 +84,10 @@ export default class Main extends Vue {
 
   private start(n: number, key: any): void {
     this.restart = false
+    !!key && (this.key = key)
+    console.log(this.key)
     if (n) {
       // 继续
-      this.key = key
       this.awswerList(this.key)
     } else {
       // 重新开始
