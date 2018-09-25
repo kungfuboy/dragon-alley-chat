@@ -1,4 +1,4 @@
 module.exports = {
   assetsDir: './',
-  baseUrl: '/dragon-alley-chat/'
+  baseUrl: '/dragon-valley-chat/'
 }
