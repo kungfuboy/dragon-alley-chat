@@ -1,6 +1,6 @@
 <template>
   <section class="content">
-    <div class="title">{{inputing ? 'Ta正在输入' : '天下会'}}</div>
+    <div class="title">{{inputing ? 'Ta正在输入' : '天下武学总汇'}}</div>
     <div class="talk" v-show="talkShow" @click="talkShow = false">
       <ul :class="{active: talkShow}">
         <li v-for="(item, index) in options" :key="index" @click="talkData(item)">{{item.value}}</li>
@@ -8,7 +8,8 @@
     </div>
     <ul class="chat-list" ref="chat">
       <li v-for="(item, index) in talkArr" :class="item.uid ? item.uid + ' left' : 'right'" :key="index">
-        <span>{{item.value}}</span>
+        <i v-if="item.uid" class="label">【{{item.label}}】 —— {{item.mark}}</i>
+        <span v-html="item.value"></span>
       </li>
       <li class="left wish" v-show="inputing">
         <span>
@@ -62,6 +63,7 @@ export default class Main extends Vue {
       data[arr[0]] = arr[1]
     })
     this.anchor = window.localStorage.getItem('#kungfu')
+    this.inputing = true
     if (data.anchor) {
       // 如果链接中包含分享key则从分享场景开始
       this.scenes = data.anchor
@@ -85,7 +87,6 @@ export default class Main extends Vue {
   private start(n: number, key: any): void {
     this.restart = false
     !!key && (this.key = key)
-    console.log(this.key)
     if (n) {
       // 继续
       this.awswerList(this.key)
