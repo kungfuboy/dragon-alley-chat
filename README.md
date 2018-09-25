@@ -1,4 +1,4 @@
-# chat-kungfu
+# dragon-valley-chat
 
 ## Project setup
 ```
