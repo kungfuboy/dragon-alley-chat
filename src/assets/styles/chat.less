@@ -25,31 +25,38 @@
       display: block;
       width: auto;
     }
-    > span {
-      padding: 10px 15px;
+    span {
       max-width: 65%;
       display: inline-block;
       box-shadow: 0 1px 5px @themeColor;
       overflow: hidden;
       word-wrap: break-word;
+      box-sizing: border-box;
+      position: relative;
     }
     &.left {
       justify-content: flex-start;
-      left: 0;
       span {
+        padding: 10px 15px;
         border-radius: 0 15px 15px 15px;
+      }
+      &.img {
+        padding: 0 !important;
       }
     }
     &.right {
       justify-content: flex-end;
-      right: 0;
       &:before {
         content: '我';
       }
       span {
+        padding: 10px 15px;
         color: #fcfaf2;
         background: @themeColor; // 红碧
         border-radius: 15px 0 15px 15px;
+        &.img {
+          padding: 0;
+        }
       }
     }
   }

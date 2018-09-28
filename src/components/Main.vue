@@ -9,7 +9,7 @@
     <ul class="chat-list" ref="chat">
       <li v-for="(item, index) in talkArr" :class="item.uid ? item.uid + ' left' : 'right'" :key="index">
         <i v-if="item.uid" class="label">【{{item.label}}】 —— {{item.mark}}</i>
-        <span v-html="item.value"></span>
+        <span :style="isImg(item.value) ? 'padding: 0;font-size: 0;' : ''" v-html="contentFilter(item.value)"></span>
       </li>
       <li class="left wish" v-show="inputing">
         <span>
@@ -149,17 +149,42 @@ export default class Main extends Vue {
     history.pushState(state, '', `?anchor=${data}`)
   }
 
+  private contentFilter(value: string): string {
+    const mark = value.split(':')[0]
+    switch (mark) {
+      case 'img':
+        // 添加图片显示功能
+        const img = value.substr(4)
+        return `<img src="${img}" style="width: 100%;height: auto;" />`
+      case 'url':
+        // 添加链接显示功能
+        const a = value.substr(4)
+        return `<a href=${a} style="font-size: 12px;color: #fffffb">${a}</a>`
+      default:
+        return value
+    }
+  }
+
+  private isImg(value: string): boolean {
+    const mark = value.split(':')[0]
+    return mark === 'img'
+  }
+
   private updateScroll(): void {
     const $dom: any = this.$refs.chat
-    const distance = $dom.scrollHeight - $dom.offsetHeight
-    const duration = 250
-    const startTime = Date.now()
+    if (!$dom.scrollHeight) {
+      return
+    } else {
+      const distance = $dom.scrollHeight - $dom.offsetHeight
+      const duration = 250
+      const startTime = Date.now()
 
-    requestAnimationFrame(function step() {
-      const p = Math.min(1, (Date.now() - startTime) / duration)
-      $dom.scrollTop = $dom.scrollTop + distance * p
-      p < 1 && requestAnimationFrame(step)
-    })
+      requestAnimationFrame(function step() {
+        const p = Math.min(1, (Date.now() - startTime) / duration)
+        $dom.scrollTop = $dom.scrollTop + distance * p
+        p < 1 && requestAnimationFrame(step)
+      })
+    }
   }
 }
 </script>
