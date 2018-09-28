@@ -94,9 +94,9 @@ export default {
         value: '总之呢，韧带的强度要优于肌肉，打个比方……'
       },
       {
-        label: '十一',
-        mark: '神勇爆头男',
-        uid: 'eleven',
+        label: '夜隼',
+        mark: '夜鹰小徒弟 & 专业拆台',
+        uid: 'falcon',
         value: '你的比喻真多……'
       },
       {
